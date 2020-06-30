@@ -54,7 +54,7 @@ Full report at:
 ClojureScript:
 
 ``` clojure
- $ plk example/sci.cljc
+$ plk example/sci.cljc
 Execution error (Error) at (<cljs repl>:1).
 Var sci.core/eval-string does not exist, sci.core never required
 ```
