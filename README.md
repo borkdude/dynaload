@@ -21,7 +21,7 @@ ClojureScript it's macro. Both versions return a delay that will either contain
 a value or will throw upon deref. It lets you dynamically refer to a var that
 may or may not be there. In Clojure it will require the namespace for you and
 throw if the namespace is not there. In ClojureScript you will have to require
-the namespace manually before deref, since ClojureScript namespaces can not be
+the namespace manually before deref, since ClojureScript namespaces cannot be
 loaded dynamically (outside of a REPL).
 
 Consider this example from `examples/sci.cljc`
@@ -85,4 +85,4 @@ Distributed under the EPL License. See LICENSE.
 
 This project is based on code from:
 - [clojure.spec.alpha](https://github.com/clojure/spec.alpha), which is licensed under the same EPL License.
-- [https://github.com/clojure/clojurescript](https://github.com/clojure/spec.alpha), which is licensed under the same EPL License.
+- [clojurescript](https://github.com/clojure/spec.alpha), which is licensed under the same EPL License.
