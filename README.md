@@ -1,6 +1,6 @@
 # dynaload
 
-This is the dynaload functionality extracted from
+Dynaload functionality blatantly stolen from
 [clojure.spec.alpha](https://github.com/clojure/spec.alpha).
 
 ## Why
