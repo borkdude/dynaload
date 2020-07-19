@@ -18,13 +18,16 @@
              (monitor-exit locklocal#)))))))
 
 (defn dynaload
-  [s]
-  (delay
-    (let [ns (namespace s)]
-      (assert ns)
-      (locking2 dynalock
-                (require (symbol ns)))
-      (let [v (resolve s)]
-        (if v
-          @v
-          (throw (RuntimeException. (str "Var " s " is not on the classpath"))))))))
+  ([s] (dynaload s {}))
+  ([s opts]
+   (delay
+     (let [ns (namespace s)]
+       (assert ns)
+       (try (locking2 dynalock
+                      (require (symbol ns)))
+            (catch Exception _ nil))
+       (let [v (resolve s)]
+         (if v
+           @v
+           (or (:default opts)
+               (throw (RuntimeException. (str "Var " s " is not on the classpath"))))))))))
