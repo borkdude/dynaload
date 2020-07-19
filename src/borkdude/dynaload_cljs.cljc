@@ -1,7 +1,7 @@
 (ns borkdude.dynaload-cljs)
 
 (defmacro dynaload [[_quote s]]
-  `(LazyVar.
+  `(borkdude.dynaload-cljs/LazyVar.
     (fn []
       (if (cljs.core/exists? ~s)
         ~(vary-meta s assoc :cljs.analyzer/no-resolve true)
