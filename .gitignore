@@ -1,1 +1,3 @@
 .cpcache
+cljs-opts.edn
+cljs-test-runner-out

@@ -77,6 +77,12 @@ $ plk -Sdeps '{:deps {borkdude/sci {:mvn/version "0.1.0"}}}' -e "(require '[sci.
 
 Again, note: in ClojureScript we had to require sci manually, whereas in Clojure it was required for us.
 
+## Test
+
+``` shell
+$ script/test
+```
+
 ## License
 
 Copyright © 2020 Michiel Borkent
