@@ -29,5 +29,6 @@
        (let [v (resolve s)]
          (if v
            @v
-           (or (:default opts)
-               (throw (RuntimeException. (str "Var " s " is not on the classpath"))))))))))
+           (if-let [e (find opts :default)]
+             (val e)
+             (throw (RuntimeException. (str "Var " s " is not on the classpath"))))))))))
