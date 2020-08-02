@@ -1,5 +1,7 @@
 # dynaload
 
+[![Clojars Project](https://img.shields.io/clojars/v/borkdude/dynaload.svg)](https://clojars.org/borkdude/dynaload)
+
 Dynaload functionality blatantly stolen from
 [clojure.spec.alpha](https://github.com/clojure/spec.alpha).
 
