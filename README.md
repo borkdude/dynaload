@@ -77,6 +77,10 @@ $ plk -Sdeps '{:deps {borkdude/sci {:mvn/version "0.1.0"}}}' -e "(require '[sci.
 
 Again, note: in ClojureScript we had to require sci manually, whereas in Clojure it was required for us.
 
+In addition to a fully qualified symbol, `dynaload` accepts an option map with
+currently one options: `:default`, a value that is returned if the var cannot be
+found. If no default is provided, `dynaload` will throw instead.
+
 ## Test
 
 ``` shell
