@@ -19,7 +19,8 @@
       clj)))
 
 #?(:clj (defn resolve* [sym]
-          (let [ns (symbol (namespace sym))
+          ;; TODO: this adds + 20MB to the GraalVM binary
+          #_(let [ns (symbol (namespace sym))
                 v (symbol (name sym))]
             (when-let [ns (find-ns ns)]
               (.getMapping ^clojure.lang.Namespace ns v)))))

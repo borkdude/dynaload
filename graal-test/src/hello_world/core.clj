@@ -1,6 +1,6 @@
 (ns hello-world.core
   (:gen-class)
-  (:require [borkdude.dynaload-clj :as dyn]))
+  (:require [borkdude.dynaload :as dyn]))
 
 (def eval-string* (dyn/dynaload 'sci.core/eval-string {:default (fn [_] :dude)}))
 
