@@ -10,7 +10,7 @@
     (is (= 1 (f))))
   (is (thrown-with-msg?
        #?(:clj Exception :cljs js/Error)
-       #"borkdude\.bar/foo" @(dynaload 'borkdude.bar/foo)))
+       #"borkdude.bar" @(dynaload 'borkdude.bar/foo)))
   (let [f @(dynaload 'borkdude.bar/foo {:default (fn [] 1)})]
     (is (= 1 (f))))
   (let [f @(dynaload 'borkdude.bar/foo {:default nil})]

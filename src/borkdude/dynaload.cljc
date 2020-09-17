@@ -22,9 +22,33 @@
    (def resolve-at-compile-time? (= "true"
                                     (System/getProperty "borkdude.dynaload.aot"))))
 
-#?(:clj (def resolve* (if resolve-at-compile-time?
-                        (constantly nil)
-                        requiring-resolve)))
+#?(:clj (defonce ^:private dynalock (Object.)))
+
+#?(:clj
+   (defmacro ^:private locking2
+     "Executes exprs in an implicit do, while holding the monitor of x.
+  Will release the monitor of x in all circumstances."
+     {:added "1.0"}
+     [x & body]
+     `(let [lockee# ~x]
+        (try
+          (let [locklocal# lockee#]
+            (monitor-enter locklocal#)
+            (try
+              ~@body
+              (finally
+                (monitor-exit locklocal#))))))))
+
+#?(:clj (def resolve*
+          (if resolve-at-compile-time?
+            (constantly nil)
+            (fn [sym]
+              (let [ns (namespace sym)]
+                (assert ns)
+                (try (locking2 dynalock
+                               (require (symbol ns)))
+                     (catch Exception _ nil))
+                (resolve sym))))))
 
 (defmacro dynaload
   ([s] `(dynaload ~s {}))
