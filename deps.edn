@@ -1,7 +1,8 @@
-{:aliases {:clj-test {:extra-paths ["test"]
+{:paths ["src"]
+ :aliases {:clj-test {:extra-paths ["test"]
                       :extra-deps {;; minimal supported CLJ version
                                    org.clojure/clojure {:mvn/version "1.9.0"}
-                                   test-runner
+                                   cognitect-labs/test-runner
                                    {:git/url "https://github.com/cognitect-labs/test-runner"
                                     :sha "cb96e80f6f3d3b307c59cbeb49bb0dcb3a2a780b"}}
                       :main-opts ["-m" "cognitect.test-runner"]}
@@ -9,4 +10,6 @@
            {:extra-deps {org.clojure/clojurescript {:mvn/version "1.10.597"}
                          olical/cljs-test-runner {:mvn/version "3.7.0"}}
             :extra-paths ["test" "cljs-test-runner-out/gen"]
-            :main-opts ["-m" "cljs-test-runner.main" "-d" "test"]}}}
+            :main-opts ["-m" "cljs-test-runner.main" "-d" "test"]}
+           :graal-test {:extra-paths ["graal-test/src"]
+                        :extra-deps {org.clojure/clojure {:mvn/version "1.10.2-alpha1"}}}}}

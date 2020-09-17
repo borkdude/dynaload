@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+mkdir -p classes
+clojure -A:graal-test -e "(compile 'hello-world.core)"
+
+# java -cp "$(clojure -A:graal-test -Spath):classes" hello_world.core
+
+if [ -z "$GRAALVM_HOME" ]; then
+    echo "Please set $GRAALVM_HOME"
+    exit 1
+fi
+
+"$GRAALVM_HOME/bin/native-image" \
+    -cp "$(clojure -A:graal-test -Spath):classes" \
+    -H:Name=hello-world \
+    -H:+ReportExceptionStackTraces \
+    --initialize-at-build-time  \
+    --report-unsupported-elements-at-runtime \
+    --verbose \
+    --no-fallback \
+    --no-server \
+    "-J-Xmx3g" \
+    hello_world.core
