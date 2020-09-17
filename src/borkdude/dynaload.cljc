@@ -18,36 +18,41 @@
       cljs
       clj)))
 
-#?(:clj (defn resolve* [sym]
-          ;; TODO: this adds + 20MB to the GraalVM binary
-          #_(let [ns (symbol (namespace sym))
-                v (symbol (name sym))]
-            (when-let [ns (find-ns ns)]
-              (.getMapping ^clojure.lang.Namespace ns v)))))
+#?(:clj
+   (def resolve-at-compile-time? (= "true"
+                                    (System/getProperty "borkdude.dynaload.aot"))))
+
+#?(:clj (def resolve* (if resolve-at-compile-time?
+                        (constantly nil)
+                        requiring-resolve)))
 
 (defmacro dynaload
   ([s] `(dynaload ~s {}))
   ([[_quote s] opts]
-   `(#?(:clj borkdude.dynaload.LazyVar.
-        :cljs borkdude.dynaload/LazyVar.)
-     (fn []
-       (? :clj
-          (if-let [v# (resolve* '~s)]
-            v#
-            (if-let [e# (find ~opts :default)]
-              (val e#)
-              (throw
-               (ex-info
-                (str "Var " '~s " does not exist, "
-                     (namespace '~s) " never required")
-                {}))))
-          :cljs
-          (if (cljs.core/exists? ~s)
-            ~(vary-meta s assoc :cljs.analyzer/no-resolve true)
-            (if-let [e# (find ~opts :default)]
-              (val e#)
-              (throw
-               (js/Error.
-                (str "Var " '~s " does not exist, "
-                     (namespace '~s) " never required")))))))
-     nil)))
+   #_{:clj-kondo/ignore[:redundant-let]}
+   (let [#?@(:clj [resolved-at-compile-time (when resolve-at-compile-time?
+                                              (resolve s))])]
+     `(#?(:clj borkdude.dynaload.LazyVar.
+          :cljs borkdude.dynaload/LazyVar.)
+       (fn []
+         (? :clj
+            (if-let [v# (or #?(:clj ~resolved-at-compile-time)
+                            (resolve* '~s))]
+              v#
+              (if-let [e# (find ~opts :default)]
+                (val e#)
+                (throw
+                 (ex-info
+                  (str "Var " '~s " does not exist, "
+                       (namespace '~s) " never required")
+                  {}))))
+            :cljs
+            (if (cljs.core/exists? ~s)
+              ~(vary-meta s assoc :cljs.analyzer/no-resolve true)
+              (if-let [e# (find ~opts :default)]
+                (val e#)
+                (throw
+                 (js/Error.
+                  (str "Var " '~s " does not exist, "
+                       (namespace '~s) " never required")))))))
+       nil))))

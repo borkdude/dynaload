@@ -1,8 +1,14 @@
 (ns hello-world.core
   (:gen-class)
-  (:require [borkdude.dynaload :as dyn]))
+  (:require [borkdude.dynaload :as dyn]
+            [sci.core]))
 
-(def eval-string* (dyn/dynaload 'sci.core/eval-string {:default (fn [_] :dude)}))
+;; without sci.core and with and borkdude.dynaload.aot=true: 8MB
+;; with sci.core and borkdude.dynaload.aot=true: 17MB
+;; with sci.core and without borkdude.dynaload.aot=true: 33MB
+;; without sci.core and without borkdude.dynaload.aot=true: 25MB
+
+(def eval-string* (dyn/dynaload 'sci.core/eval-string))
 
 (defn eval-string [s]
   (@eval-string* s))

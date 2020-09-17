@@ -2,7 +2,7 @@
 
 [![Clojars Project](https://img.shields.io/clojars/v/borkdude/dynaload.svg)](https://clojars.org/borkdude/dynaload)
 
-Dynaload functionality blatantly stolen from
+Dynaload functionality inspired by
 [clojure.spec.alpha](https://github.com/clojure/spec.alpha).
 
 ## Why
@@ -16,23 +16,47 @@ it as a library.
 
 ## Usage
 
-This library exposes two namespaces, one for Clojure (`borkdude.dynaload-clj`)
-and one for ClojureScript (`borkdude.dynaload-cljs`). Each namespace exposes one
-public var, `dynaload`. In Clojure `dynaload` is a regular function, in
-ClojureScript it's macro. Both versions return a delay that will either contain
-a value or will throw upon deref. It lets you dynamically refer to a var that
-may or may not be there. In Clojure it will require the namespace for you and
-throw if the namespace is not there. In ClojureScript you will have to require
-the namespace manually before deref, since ClojureScript namespaces cannot be
-loaded dynamically (outside of a REPL).
+This library exposes one namespaces: `borkdude.dynaload` with one macro:
+`dynaload`. The macro returns a delay that will either contain a value or will
+throw upon deref (unless provided a `:default` in a map in the second
+argument). It lets you dynamically refer to a var that may or may not be
+there. In Clojure it will require the namespace for you and throw if the
+namespace is not there. In ClojureScript you will have to require the namespace
+manually before deref, since ClojureScript namespaces cannot be loaded
+dynamically (outside of a REPL).
+
+### GraalVM
+
+When using this library with GraalVM `native-image` it is recommended to set the
+Java property `borkdude.dynaload.aot` to `true` both during Clojure compilation
+and GraalVM `native-image` compilation. This will avoid using `require` at
+runtime, which has a beneficial effect on binary size and compile time memory
+usage.  An example can be found in [graal-test](graal-test) which shows these
+differences in binary size:
+
+- Without loading `sci.core` and with `borkdude.dynaload.aot=true`: 8MB
+- With `sci.core` and with `borkdude.dynaload.aot=true`: 17MB
+- With `sci.core` and without `borkdude.dynaload.aot=true`: 33MB
+- Without `sci.core` and without `borkdude.dynaload.aot=true`: 25MB
+
+Because setting `borkdude.dynaload.aot` to `true` will avoid runtime require,
+you will have to require the dynaloaded namespaces before namespaces where the vars are
+dynaloaded.
+
+### Options
+
+In addition to a fully qualified symbol, `dynaload` accepts an option map with
+currently one options: `:default`, a value that is returned if the var cannot be
+found. If no default is provided, `dynaload` will throw instead.
+
+## Example
 
 Consider this example from `examples/sci.cljc`
 
 ``` clojure
 (ns example.sci
   (:require
-   #?(:clj  [borkdude.dynaload-clj  :refer        [dynaload]]
-      :cljs [borkdude.dynaload-cljs :refer-macros [dynaload]])))
+   [borkdude.dynaload :refer [dynaload]]))
 
 (def eval-string (dynaload 'sci.core/eval-string))
 
@@ -47,10 +71,7 @@ On the JVM:
 ``` clojure
 $ clojure example/sci.cljc
 Syntax error (FileNotFoundException) compiling at (example/sci.cljc:8:1).
-Could not locate sci/core__init.class, sci/core.clj or sci/core.cljc on classpath.
-
-Full report at:
-/var/folders/2m/h3cvrr1x4296p315vbk7m32c0000gp/T/clojure-3838719710831994824.edn
+Var sci.core/eval-string does not exist, sci.core never required
 ```
 
 ClojureScript:
@@ -77,11 +98,7 @@ $ plk -Sdeps '{:deps {borkdude/sci {:mvn/version "0.1.0"}}}' -e "(require '[sci.
 6
 ```
 
-Again, note: in ClojureScript we had to require sci manually, whereas in Clojure it was required for us.
-
-In addition to a fully qualified symbol, `dynaload` accepts an option map with
-currently one options: `:default`, a value that is returned if the var cannot be
-found. If no default is provided, `dynaload` will throw instead.
+Note: in ClojureScript we had to require sci manually, whereas in Clojure it was required for us.
 
 ## Test
 

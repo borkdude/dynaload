@@ -12,4 +12,5 @@
             :extra-paths ["test" "cljs-test-runner-out/gen"]
             :main-opts ["-m" "cljs-test-runner.main" "-d" "test"]}
            :graal-test {:extra-paths ["graal-test/src"]
-                        :extra-deps {org.clojure/clojure {:mvn/version "1.10.2-alpha1"}}}}}
+                        :extra-deps {org.clojure/clojure {:mvn/version "1.10.2-alpha1"}
+                                     borkdude/sci {:mvn/version "0.1.0"}}}}}
