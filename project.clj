@@ -1,4 +1,4 @@
-(defproject borkdude/dynaload "0.1.0"
+(defproject borkdude/dynaload "0.2.0"
   :description "The dynaload logic from clojure.spec.alpha as a library."
   :url "https://github.com/borkdude/dynaload"
   :scm {:name "git"
