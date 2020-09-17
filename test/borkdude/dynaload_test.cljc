@@ -1,8 +1,8 @@
 (ns borkdude.dynaload-test
   (:require
-   #?(:clj  [borkdude.dynaload-clj  :refer        [dynaload]]
-      :cljs [borkdude.dynaload-cljs :refer-macros [dynaload]])
-   #?(:cljs [borkdude.lib]) ;; CLJS requires users to require the lib manually
+   #?(:clj  [borkdude.dynaload :refer [dynaload]]
+      :cljs [borkdude.dynaload :refer-macros [dynaload]])
+   [borkdude.lib] ;; borkdude.lib must be required, else dynaload will throw
    [clojure.test :as t :refer [deftest is]]))
 
 (deftest dynaload-test
