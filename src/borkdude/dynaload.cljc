@@ -11,14 +11,27 @@
           (set! cached x))
         x))))
 
+(defmacro ? [& {:keys [cljs clj]}]
+  (if (contains? &env '&env)
+    `(if (:ns ~'&env) ~cljs ~clj)
+    (if #?(:clj (:ns &env) :cljs true)
+      cljs
+      clj)))
+
+#?(:clj (defn resolve* [sym]
+          (let [ns (symbol (namespace sym))
+                v (symbol (name sym))]
+            (when-let [ns (find-ns ns)]
+              (.getMapping ^clojure.lang.Namespace ns v)))))
+
 (defmacro dynaload
   ([s] `(dynaload ~s {}))
   ([[_quote s] opts]
    `(#?(:clj borkdude.dynaload.LazyVar.
         :cljs borkdude.dynaload/LazyVar.)
      (fn []
-       #?(:clj
-          (if-let [v# (resolve '~s)]
+       (? :clj
+          (if-let [v# (resolve* '~s)]
             v#
             (if-let [e# (find ~opts :default)]
               (val e#)
@@ -28,7 +41,7 @@
                      (namespace '~s) " never required")
                 {}))))
           :cljs
-          (if (cljs.core/exists? '~s)
+          (if (cljs.core/exists? ~s)
             ~(vary-meta s assoc :cljs.analyzer/no-resolve true)
             (if-let [e# (find ~opts :default)]
               (val e#)
