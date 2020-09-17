@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.1
+
+Same as v0.2.0 but fixes support for Clojure 1.9.0.
+
 ## v0.2.0
 
 Enhancements:
