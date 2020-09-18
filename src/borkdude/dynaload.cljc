@@ -9,7 +9,55 @@
       (let [x (f)]
         (when-not (nil? x)
           (set! cached x))
-        x))))
+        x)))
+  #?(:clj clojure.lang.IFn :cljs IFn)
+  (#?(:clj invoke :cljs -invoke) [this]
+    (@this))
+  (#?(:clj invoke :cljs -invoke) [this a]
+    (@this a))
+  (#?(:clj invoke :cljs -invoke) [this a b]
+    (@this a b))
+  (#?(:clj invoke :cljs -invoke) [this a b c]
+    (@this a b c))
+  (#?(:clj invoke :cljs -invoke) [this a b c d]
+    (@this a b c d))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e]
+    (@this a b c d e))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f]
+    (@this a b c d e f))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g]
+    (@this a b c d e f g))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h]
+    (@this a b c d e f g h))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i]
+    (@this a b c d e f g h i))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j]
+    (@this a b c d e f g h i j))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k]
+    (@this a b c d e f g h i j k))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l]
+    (@this a b c d e f g h i j k l))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m]
+    (@this a b c d e f g h i j k l m))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m n]
+    (@this a b c d e f g h i j k l m n))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m n o]
+    (@this a b c d e f g h i j k l m n o))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m n o p]
+    (@this a b c d e f g h i j k l m n o p))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m n o p q]
+    (@this a b c d e f g h i j k l m n o p q))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m n o p q r]
+    (@this a b c d e f g h i j k l m n o p q r))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m n o p q r s]
+    (@this a b c d e f g h i j k l m n o p q r s))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m n o p q r s t]
+    (@this a b c d e f g h i j k l m n o p q r s t))
+  (#?(:clj invoke :cljs -invoke) [this a b c d e f g h i j k l m n o p q r s t rest]
+    (apply @this a b c d e f g h i j k l m n o p q r s t rest))
+  #?(:clj
+     (applyTo [this args]
+              (apply @this args))))
 
 (defmacro ? [& {:keys [cljs clj]}]
   (if (contains? &env '&env)

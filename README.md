@@ -60,7 +60,7 @@ Consider this example from `examples/sci.cljc`
 
 (def eval-string (dynaload 'sci.core/eval-string))
 
-(println (@eval-string "(+ 1 2 3)"))
+(println (eval-string "(+ 1 2 3)"))
 ```
 
 First we run this without having the [sci](https://github.com/borkdude/sci)
