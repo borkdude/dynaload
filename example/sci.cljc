@@ -4,4 +4,4 @@
 
 (def eval-string (dynaload 'sci.core/eval-string))
 
-(println (@eval-string "(+ 1 2 3)"))
+(println (eval-string "(+ 1 2 3)"))

@@ -8,10 +8,7 @@
 ;; with sci.core and without borkdude.dynaload.aot=true: 33MB
 ;; without sci.core and without borkdude.dynaload.aot=true: 25MB
 
-(def eval-string* (dyn/dynaload 'sci.core/eval-string))
-
-(defn eval-string [s]
-  (@eval-string* s))
+(def eval-string (dyn/dynaload 'sci.core/eval-string))
 
 (defn -main [& _args]
   (prn (eval-string "(+ 1 2 3)")))
