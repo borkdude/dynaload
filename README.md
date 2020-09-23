@@ -34,10 +34,12 @@ runtime, which has a beneficial effect on binary size and compile time memory
 usage.  An example can be found in [graal-test](graal-test) which shows these
 differences in binary size:
 
-- Without loading `sci.core` and with `borkdude.dynaload.aot=true`: 8MB
-- With `sci.core` and with `borkdude.dynaload.aot=true`: 17MB
-- With `sci.core` and without `borkdude.dynaload.aot=true`: 33MB
-- Without `sci.core` and without `borkdude.dynaload.aot=true`: 25MB
+| With `sci.core` | `borkdude.dynaload.aot=true` | binary size in MB |
+| ---             | ---                          |               --- |
+| yes             | no                           |                33 |
+| no              | no                           |                25 |
+| yes             | yes                          |                17 |
+| no              | yes                          |                 8 |
 
 Because setting `borkdude.dynaload.aot` to `true` will avoid runtime require,
 you will have to require the dynaloaded namespaces before namespaces where the vars are
