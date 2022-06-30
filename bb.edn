@@ -1,0 +1,11 @@
+{:tasks {test:clj {:doc "Run tests in JVM Clojure"
+                   :task (clojure "-M:clj-test")}
+         test:cljs {:doc "Run tests in ClojureScript"
+                    :task (clojure "-M:cljs-test")}
+         test:graal {:doc "Run tests with native-image"
+                     :task (shell "script/graal-test")}
+         test:bb {:doc "Run tests with bb"
+                  :extra-paths ["src" "test"]
+                  :requires ([clojure.test :as t]
+                             [borkdude.dynaload-test])
+                  :task (t/run-tests 'borkdude.dynaload-test)}}}

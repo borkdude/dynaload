@@ -6,3 +6,5 @@ pom.xml
 .lein-failures
 hello-world
 classes
+hello-world.build_artifacts.txt
+.cache
