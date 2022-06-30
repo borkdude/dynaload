@@ -5,6 +5,13 @@
 Dynaload functionality inspired by
 [clojure.spec.alpha](https://github.com/clojure/spec.alpha).
 
+This library works in:
+
+- Clojure JVM
+- Clojure JVM + GraalVM `native-image`
+- ClojureScript
+- [Babashka](https://babashka.org/)
+
 ## Why
 
 It's often useful to make libraries light-weight and transitive dependencies
@@ -110,7 +117,7 @@ $ script/test
 
 ## License
 
-Copyright © 2020 Michiel Borkent
+Copyright © 2020 - 2022 Michiel Borkent
 
 Distributed under the EPL License. See LICENSE.
 
