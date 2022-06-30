@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.3.4
+
+- Make library compatible with babashka
+
 ## v0.2.2
 
 - Implement `IFn` on `LazyVar`.
