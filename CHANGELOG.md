@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.3.5
+
+- Make library compatible with nbb
+
 ## 0.3.4
 
 - Make library compatible with babashka
