@@ -8,4 +8,6 @@
                   :extra-paths ["src" "test"]
                   :requires ([clojure.test :as t]
                              [borkdude.dynaload-test])
-                  :task (t/run-tests 'borkdude.dynaload-test)}}}
+                  :task (t/run-tests 'borkdude.dynaload-test)}
+         test:nbb {:doc "Run tests with nbb"
+                   :task (shell "npx nbb nbb_test_runner.cljs")}}}
