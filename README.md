@@ -24,13 +24,15 @@ it as a library.
 ## Usage
 
 This library exposes one namespaces: `borkdude.dynaload` with one macro:
-`dynaload`. The macro returns a delay that will either contain a value or will
-throw upon deref (unless provided a `:default` in a map in the second
-argument). It lets you dynamically refer to a var that may or may not be
-there. In Clojure it will require the namespace for you and throw if the
-namespace is not there. In ClojureScript you will have to require the namespace
-manually before deref, since ClojureScript namespaces cannot be loaded
-dynamically (outside of a REPL).
+`dynaload`. The macro returns a var-like object that implements `IDeref` and
+`IFn`. The object lazily resolves the var on first use and can be called
+directly as a function (as shown in the examples below) or dereferenced to
+obtain the underlying var. If the var cannot be resolved, it will throw (unless
+provided a `:default` in a map in the second argument). It lets you dynamically
+refer to a var that may or may not be there. In Clojure it will require the
+namespace for you and throw if the namespace is not there. In ClojureScript you
+will have to require the namespace manually before use, since ClojureScript
+namespaces cannot be loaded dynamically (outside of a REPL).
 
 ### GraalVM
 
