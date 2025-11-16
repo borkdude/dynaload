@@ -16,7 +16,7 @@
              clojure.lang.IDeref
              (deref [_this]
                (if-not (nil? @cached)
-                 cached
+                 @cached
                  (let [x (f)]
                    (when-not (nil? x)
                      (vreset! cached x))
